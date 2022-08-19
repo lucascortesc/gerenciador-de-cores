@@ -9,15 +9,14 @@ export const authorization = (req: Request, res: Response, next: NextFunction): 
     throw new AppError("missing token", 401);
   }
 
-  const splitToken = token.split(" ")[1];
+  const splitToken = token.split(" ");
 
-  jwt.verify(splitToken, process.env.SECRET_KEY as string, (error: any, decoded: any) => {
+  jwt.verify(splitToken[1], process.env.SECRET_KEY as string, (error: any, decoded: any) => {
     if (error) {
       throw new AppError("invalid or expired token", 401);
     }
 
     res.locals.userId = decoded.id;
-
-    next();
   });
+  next();
 };

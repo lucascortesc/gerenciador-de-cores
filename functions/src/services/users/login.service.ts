@@ -12,6 +12,7 @@ export const loginService = async ({ email, password }: ILoginUser): Promise<str
   }
 
   const user = { ...userExists.docs[0].data() };
+  const userId = userExists.docs[0].id;
 
   const passwordMatch = bcrypt.compareSync(password, user.password);
 
@@ -19,7 +20,9 @@ export const loginService = async ({ email, password }: ILoginUser): Promise<str
     throw new AppError("email or password incorrect", 401);
   }
 
-  const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY as string, { expiresIn: "24h" });
+  const token = jwt.sign({ id: userId }, process.env.SECRET_KEY as string, {
+    expiresIn: "24h",
+  });
 
   return token;
 };
