@@ -23,6 +23,8 @@ export const schemaValidation =
         );
       }
 
+      req.body = validation;
+
       next();
     } catch (error) {
       if (error instanceof ValidationError) {

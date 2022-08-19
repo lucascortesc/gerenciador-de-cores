@@ -3,7 +3,7 @@ export interface IPalleteRequest {
   colors: IColor[];
 }
 
-export interface IPalleteResponse extends IPalleteRequest {
+export interface IPaletteResponse extends IPalleteRequest {
   id: string;
 }
 
@@ -11,4 +11,9 @@ export interface IColor {
   name: string;
   rgba: string;
   hex: string;
+}
+
+export interface IPaletteUpdate {
+  nome?: string;
+  colors?: IColor[];
 }

@@ -7,16 +7,46 @@ export const createPaletteSchema = yup
     colors: yup
       .array()
       .of(
-        yup.object().shape({
-          name: yup.string().required("name is required").max(32, "name must contain less than 33 characters"),
-          rgba: yup.string().required("rgba is required"),
-          hex: yup
-            .string()
-            .required("hex is required")
-            .min(1, "hex must contain at least 1 characters")
-            .max(6, "hex must contain less than 7 characters"),
-        })
+        yup
+          .object()
+          .shape({
+            name: yup
+              .string()
+              .required("color name is required")
+              .max(32, "color name must contain less than 33 characters"),
+            rgba: yup.string().required("color rgba is required"),
+            hex: yup
+              .string()
+              .required("color hex is required")
+              .min(1, "color hex must contain at least 1 characters")
+              .max(6, "color hex must contain less than 7 characters"),
+          })
+          .noUnknown(true)
       )
       .required(),
+  })
+  .noUnknown(true);
+
+export const updatePaletteSchema = yup
+  .object()
+  .shape({
+    name: yup.string().max(120, "name must contain less than 121 characters"),
+    colors: yup.array().of(
+      yup
+        .object()
+        .shape({
+          name: yup
+            .string()
+            .required("color name is required")
+            .max(32, "color name must contain less than 33 characters"),
+          rgba: yup.string().required("color rgba is required"),
+          hex: yup
+            .string()
+            .required("color hex is required")
+            .min(1, "color hex must contain at least 1 characters")
+            .max(6, "color hex must contain less than 7 characters"),
+        })
+        .noUnknown(true)
+    ),
   })
   .noUnknown(true);
