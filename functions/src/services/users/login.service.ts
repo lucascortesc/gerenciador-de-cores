@@ -2,9 +2,9 @@ import * as bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { AppError } from "../../errors/AppError";
 import { db } from "../../index";
-import { ILoginUser } from "../../interfaces/user";
+import { ILoginUser, IResponseLogin } from "../../interfaces/user";
 
-export const loginService = async ({ email, password }: ILoginUser): Promise<string> => {
+export const loginService = async ({ email, password }: ILoginUser): Promise<IResponseLogin> => {
   const userExists = await db.collection("users").where("email", "==", email).get();
 
   if (userExists.empty) {
@@ -24,5 +24,12 @@ export const loginService = async ({ email, password }: ILoginUser): Promise<str
     expiresIn: "24h",
   });
 
-  return token;
+  const response: IResponseLogin = {
+    id: userId,
+    name: user.name,
+    email: user.email,
+    token: token,
+  };
+
+  return response;
 };

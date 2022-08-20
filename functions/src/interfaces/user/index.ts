@@ -14,3 +14,7 @@ export interface ILoginUser {
   email: string;
   password: string;
 }
+
+export interface IResponseLogin extends IUserResponse {
+  token: string;
+}
