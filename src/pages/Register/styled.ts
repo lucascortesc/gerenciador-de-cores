@@ -10,25 +10,25 @@ export const Background = styled.div`
   justify-content: center;
   align-items: center;
 
-  .login__header {
+  .register__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  .login__header h1 {
+  .register__header h1 {
     font-weight: bold;
     font-size: 24px;
     color: #fd377e;
   }
 
-  .login__header p {
+  .register__header p {
     font-size: 18px;
     cursor: pointer;
     margin-right: 10px;
   }
 
-  .login__container {
+  .register__container {
     width: 90%;
     max-width: 480px;
     min-height: 320px;
@@ -39,42 +39,25 @@ export const Background = styled.div`
     padding: 15px;
   }
 
-  .login__container-form {
+  .register__container-form {
     padding: 15px;
   }
 
-  .login__icons-container {
+  .register__icons-container {
     display: flex;
     margin-top: 15px;
   }
 
-  .login__icon {
+  .register__icon {
     margin-top: 25px;
     margin-left: -30px;
     z-index: 2;
   }
 
-  .login__icon path {
+  .register__icon path {
     width: 30px;
     height: 30px;
     color: #757575;
-  }
-
-  .login__register {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
-  }
-
-  .login__redirect {
-    margin-top: 5px;
-    cursor: pointer;
-
-    :hover {
-      color: #fd377e;
-    }
   }
 
   .erro {
@@ -82,8 +65,25 @@ export const Background = styled.div`
     color: red;
   }
 
-  .login__lottie {
+  .register__lottie {
     margin: 20px 0;
+  }
+
+  .register__login {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+  }
+
+  .register__redirect {
+    margin-top: 5px;
+    cursor: pointer;
+
+    :hover {
+      color: #fd377e;
+    }
   }
 
   Button {

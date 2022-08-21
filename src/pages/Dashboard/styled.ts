@@ -78,7 +78,7 @@ export const Background = styled.div`
     .dashboard__container-content {
       justify-content: space-between;
 
-      padding: 0% 5%;
+      padding: 0% 50px;
     }
 
     .dashboard__container-lottie {

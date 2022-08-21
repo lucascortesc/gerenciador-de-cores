@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { IChildren, IUser, IUserLogin } from "../../interfaces";
+import { IChildren, IUser, IUserLogin, IUserRegister } from "../../interfaces";
 import { api } from "../../services/api";
 
 interface UserProvider {
   user: IUser;
   signIn: (data: IUserLogin) => Promise<any>;
+  registerUser: (data: IUserRegister) => Promise<any>;
 }
 
 const UserContext = createContext<UserProvider>({} as UserProvider);
@@ -32,7 +33,7 @@ export const UserProvider = ({ children }: IChildren) => {
         };
 
         localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", JSON.stringify(res.data.token));
+        localStorage.setItem("token", res.data.token);
 
         setUser(user);
         response = "Login feito com sucesso";
@@ -41,5 +42,19 @@ export const UserProvider = ({ children }: IChildren) => {
 
     return response;
   };
-  return <UserContext.Provider value={{ user, signIn }}>{children}</UserContext.Provider>;
+
+  const registerUser = async (data: IUserRegister) => {
+    let response = "";
+
+    await api
+      .post("/register", data)
+      .then((res) => {
+        response = "Usuário cadastrado com sucesso";
+      })
+      .catch((err) => (response = err.response.data));
+
+    return response;
+  };
+
+  return <UserContext.Provider value={{ user, signIn, registerUser }}>{children}</UserContext.Provider>;
 };
