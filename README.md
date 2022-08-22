@@ -28,7 +28,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias/bibliotecas:
  </tr>
  <tr>
 <td> React Hook Form</td>
-<td> React Hottoast</td>
+<td> React hot-toast</td>
 <td> React Router Dom</td>
 <td> Axios</td>
 <td> Material UI</td>
