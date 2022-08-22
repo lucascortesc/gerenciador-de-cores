@@ -7,6 +7,7 @@ import { Header } from "../../components/Header";
 import { Modal } from "../../components/Modal";
 import { FormStep1 } from "../../components/PaletteForm/step1";
 import { FormStep2 } from "../../components/PaletteForm/step2";
+import { FormStep3 } from "../../components/PaletteForm/step3";
 import { Palettes } from "../../components/Palettes";
 import animatedLoading from "../../lottie/41343-4-color-circles-loading.json";
 import { usePalettes } from "../../Providers/Palettes";
@@ -50,7 +51,8 @@ export const Main = () => {
         return <FormStep1 title={"Nome da paleta"} />;
       case 2:
         return <FormStep2 setOpenModal={setOpenModal} title={"Criando cores"} />;
-
+      case 3:
+        return <FormStep3 setOpenModal={setOpenModal} title={"Criando cores"} />;
       default:
         return <></>;
     }

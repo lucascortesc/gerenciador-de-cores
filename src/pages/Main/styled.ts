@@ -47,7 +47,7 @@ export const MainCointainer = styled.div`
 
   .main__addPalette:hover {
     filter: brightness(1.5);
-    transform: scale(1.1) !important;
+    transform: scale(1.1);
     transition: transform 0.2s;
   }
 

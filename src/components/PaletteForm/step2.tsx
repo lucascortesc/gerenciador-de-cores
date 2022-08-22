@@ -4,11 +4,8 @@ import { motion } from "framer-motion";
 import { ReactNode, useEffect, useState } from "react";
 import { ChromePicker, ColorResult } from "react-color";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
-import Lottie from "react-lottie";
-import { formColor, IColor, IPalette } from "../../interfaces";
-import animatedLoading from "../../lottie/41343-4-color-circles-loading.json";
+import { formColor, IColor } from "../../interfaces";
 import { usePalettes } from "../../Providers/Palettes";
 import { Step2Schema } from "../../validation";
 import { Cover, Step2Container } from "./styled";
@@ -19,7 +16,7 @@ interface Props {
 }
 
 export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
-  const { createPalette, postPalette, colors, setColors, updatePalette } = usePalettes();
+  const { createPalette, postPalette, colors, setColors, updatePalette, setCreatePalette } = usePalettes();
   const [renderPicker, setRenderPicker] = useState<boolean[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -38,15 +35,6 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<any>({ resolver: yupResolver(Step2Schema) });
-
-  const loadingOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animatedLoading,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   const handleColorClick = (index: number) => {
     const aux = [...renderPicker];
@@ -101,41 +89,47 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
     setColors(colors.filter((e, i) => i !== index));
   };
 
+  const handleBack = () => {
+    setCreatePalette({ ...createPalette, step: 1 });
+  };
+
   const onSubmit = async (data: formColor) => {
-    setLoading(true);
-    const name = createPalette.name || " ";
+    setCreatePalette({ ...createPalette, step: 3, colors });
 
-    const palette: IPalette = {
-      colors,
-      name,
-    };
+    // setLoading(true);
+    // const name = createPalette.name || " ";
 
-    let res: any;
+    // const palette: IPalette = {
+    //   colors,
+    //   name,
+    // };
 
-    if (title === "Criando cores") {
-      res = await postPalette(palette);
-    } else {
-      if (createPalette.id) {
-        res = await updatePalette(createPalette.id, palette);
-      }
-    }
+    // let res: any;
 
-    if (res.error) {
-      toast.error(res.error);
-      setLoading(false);
-    } else {
-      if (title === "Criando cores") {
-        toast.success("Paleta criada com sucesso");
-      } else {
-        toast.success("Paleta editada com sucesso");
-      }
-      createPalette.step = 1;
-      setOpenModal(false);
-    }
+    // if (title === "Criando cores") {
+    //   res = await postPalette(palette);
+    // } else {
+    //   if (createPalette.id) {
+    //     res = await updatePalette(createPalette.id, palette);
+    //   }
+    // }
+
+    // if (res.error) {
+    //   toast.error(res.error);
+    //   setLoading(false);
+    // } else {
+    //   if (title === "Criando cores") {
+    //     toast.success("Paleta criada com sucesso");
+    //   } else {
+    //     toast.success("Paleta editada com sucesso");
+    //   }
+    //   createPalette.step = 1;
+    //   setOpenModal(false);
+    // }
   };
 
   return (
-    <motion.div initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+    <motion.div initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <Step2Container>
         <p className="step2__title">{title}</p>
         <div className="step2__container-button">
@@ -157,6 +151,7 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
                     {...register(`name${index + 1}`)}
                     error={!!errors[`name${index + 1}`]}
                     key={`input${index}`}
+                    defaultValue={color.name && color.name}
                     onChange={(e) => handleChangeName(e.target.value, index)}
                   />
                   <span className="erro">{errors[`name${index + 1}`]?.message as ReactNode}</span>
@@ -169,6 +164,7 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
                       background: colors[index]?.hex,
                       color: colors[index].isDark ? "white" : "black",
                       marginRight: "10px",
+                      border: "1px solid black",
                     }}
                   >
                     SELECIONAR COR
@@ -185,21 +181,14 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
               </div>
             );
           })}
-          {!loading ? (
-            <Button disabled={colors.length < 2} onClick={handleSubmit(onSubmit)} variant="contained">
-              CRIAR
+          <div className="step2__container-buttons">
+            <Button onClick={() => handleBack()} variant="contained">
+              VOLTAR
             </Button>
-          ) : (
-            <div className="createPallete__lottie">
-              <Lottie
-                options={loadingOptions}
-                width={120}
-                height={30}
-                isClickToPauseDisabled={true}
-                speed={3}
-              />
-            </div>
-          )}
+            <Button disabled={colors.length < 2} onClick={handleSubmit(onSubmit)} variant="contained">
+              AVANÇAR
+            </Button>
+          </div>
         </form>
       </Step2Container>
     </motion.div>

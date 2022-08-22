@@ -10,6 +10,7 @@ import { usePalettes } from "../../Providers/Palettes";
 import { Modal } from "../Modal";
 import { FormStep1 } from "../PaletteForm/step1";
 import { FormStep2 } from "../PaletteForm/step2";
+import { FormStep3 } from "../PaletteForm/step3";
 import { Container } from "./styled";
 
 interface Props {
@@ -77,6 +78,8 @@ export const Palette: React.FC<Props> = ({ palette }) => {
         return <FormStep1 title={"Editar nome da paleta"} />;
       case 2:
         return <FormStep2 setOpenModal={setOpenModalUpdate} title={"Editando cores"} />;
+      case 3:
+        return <FormStep3 setOpenModal={setOpenModalUpdate} title={"Editando cores"} />;
 
       default:
         return <></>;
