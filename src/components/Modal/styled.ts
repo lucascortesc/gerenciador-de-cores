@@ -19,7 +19,9 @@ export const Background = styled.div`
   .modal__body {
     width: 90%;
     min-height: 80px;
+    max-height: 100%;
     max-width: 600px;
+    overflow: auto;
 
     background-color: white;
     border-radius: 15px;

@@ -92,6 +92,14 @@ export const Step2Container = styled.div`
     display: flex;
     justify-content: space-around;
   }
+
+  @media screen and (max-width: 500px) {
+    .step2__container-color {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+  }
 `;
 
 export const Step3Container = styled.div`
