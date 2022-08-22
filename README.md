@@ -6,9 +6,9 @@ Gerenciador de cores é uma aplicação full stack em que permite criar, editar 
 
 ## Deploy
 
-###Front-end
+### Front-end
 https://geranciador-front.web.app/
-###Doc Back-end
+### Doc Back-end
 https://teppa-teste-tecnico-api-docs.vercel.app/
 
 ## Tecnologias
@@ -50,11 +50,12 @@ Esse projeto foi desenvolvido com as seguintes tecnologias/bibliotecas:
 <td> Express</td>
 <td> Yup</td>
 <td> bcryptJS</td>
-<td> jsonwebtoken</td>
-<td> uuid</td>
+
  </tr>
  <tr>
 <td> express-async-errors</td>
 <td> Firestore</td>
+  <td> jsonwebtoken</td>
+<td> uuid</td>
 </table>
 
