@@ -14,11 +14,6 @@ export interface IColor {
   name: string;
   rgba: string;
   hex: string;
-  isDark?: boolean;
-}
-
-export interface IColorBrithness extends IColor {
-  isDark: boolean;
 }
 
 export interface IUserLogin {

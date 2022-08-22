@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { IChildren, IColorBrithness, ICreatePalette, IPalette } from "../../interfaces";
+import { IChildren, IColor, ICreatePalette, IPalette } from "../../interfaces";
 import { api } from "../../services/api";
 import { validateToken } from "../validateToken";
 
@@ -10,9 +10,10 @@ interface PalettesProvider {
   getPalettes: () => Promise<any>;
   postPalette: (data: IPalette) => Promise<any>;
   deletePalette: (id: string) => Promise<any>;
-  colors: IColorBrithness[];
+  colors: IColor[];
   setColors: (value: any) => void;
   updatePalette: (id: string, data: IPalette) => Promise<any>;
+  isDark: (color: IColor) => string;
 }
 const PalettesContext = createContext<PalettesProvider>({} as PalettesProvider);
 
@@ -21,7 +22,7 @@ export const usePalettes = () => useContext(PalettesContext);
 export const PalettesProvider = ({ children }: IChildren) => {
   const [palettes, setPalettes] = useState<IPalette[]>([]);
   const [createPalette, setCreatePalette] = useState<ICreatePalette>({ step: 1 });
-  const [colors, setColors] = useState<IColorBrithness[]>([]);
+  const [colors, setColors] = useState<IColor[]>([]);
 
   const getPalettes = async () => {
     const user = JSON.parse(localStorage.getItem("user") || "");
@@ -130,6 +131,22 @@ export const PalettesProvider = ({ children }: IChildren) => {
     return response;
   };
 
+  const isDark = (color: IColor) => {
+    if (color.rgba) {
+      const rgba: string[] = color.rgba.split(",");
+
+      const r = Number(rgba[0]);
+      const g = Number(rgba[1]);
+      const b = Number(rgba[2]);
+
+      const brightness: boolean = (r * 299 + g * 587 + b * 114) / 1000 > 128 ? false : true;
+
+      return brightness ? "white" : "black";
+    }
+
+    return "black";
+  };
+
   return (
     <PalettesContext.Provider
       value={{
@@ -142,6 +159,7 @@ export const PalettesProvider = ({ children }: IChildren) => {
         colors,
         setColors,
         updatePalette,
+        isDark,
       }}
     >
       {children}

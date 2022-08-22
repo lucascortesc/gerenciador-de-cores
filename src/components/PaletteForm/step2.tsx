@@ -12,13 +12,12 @@ import { Cover, Step2Container } from "./styled";
 
 interface Props {
   setOpenModal: (value: boolean) => void;
-  title?: string;
+  title: string;
 }
 
 export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
-  const { createPalette, postPalette, colors, setColors, updatePalette, setCreatePalette } = usePalettes();
+  const { createPalette, colors, setColors, setCreatePalette, isDark } = usePalettes();
   const [renderPicker, setRenderPicker] = useState<boolean[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     let aux: boolean[] = [];
@@ -51,12 +50,7 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
         const rgba = `${pickedColor.rgb.r},${pickedColor.rgb.g},${pickedColor.rgb.b},${pickedColor.rgb.a}`;
         const newColors = [...colors];
 
-        const brightness =
-          (pickedColor.rgb.r * 299 + pickedColor.rgb.g * 587 + pickedColor.rgb.b * 114) / 1000;
-
-        const isDark = brightness > 128 ? false : true;
-
-        newColors[index] = { name: colors[index].name, hex: pickedColor.hex, rgba, isDark };
+        newColors[index] = { name: colors[index].name, hex: pickedColor.hex, rgba };
 
         setColors(newColors);
       }
@@ -77,12 +71,12 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
     }
 
     const newName = [...colors];
-    newName[index] = { name, rgba: colors[index].rgba, hex: colors[index].hex, isDark: colors[index].isDark };
+    newName[index] = { name, rgba: colors[index].rgba, hex: colors[index].hex };
     setColors(newName);
   };
 
   const handleAddColor = () => {
-    setColors([...colors, { name: " ", rgba: "255,255,255,1", hex: "#fff", isDark: false }]);
+    setColors([...colors, { name: " ", rgba: "255,255,255,1", hex: "#fff" }]);
   };
 
   const handleDelete = (index: number) => {
@@ -95,37 +89,6 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
 
   const onSubmit = async (data: formColor) => {
     setCreatePalette({ ...createPalette, step: 3, colors });
-
-    // setLoading(true);
-    // const name = createPalette.name || " ";
-
-    // const palette: IPalette = {
-    //   colors,
-    //   name,
-    // };
-
-    // let res: any;
-
-    // if (title === "Criando cores") {
-    //   res = await postPalette(palette);
-    // } else {
-    //   if (createPalette.id) {
-    //     res = await updatePalette(createPalette.id, palette);
-    //   }
-    // }
-
-    // if (res.error) {
-    //   toast.error(res.error);
-    //   setLoading(false);
-    // } else {
-    //   if (title === "Criando cores") {
-    //     toast.success("Paleta criada com sucesso");
-    //   } else {
-    //     toast.success("Paleta editada com sucesso");
-    //   }
-    //   createPalette.step = 1;
-    //   setOpenModal(false);
-    // }
   };
 
   return (
@@ -162,7 +125,7 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
                     key={`button${index}`}
                     style={{
                       background: colors[index]?.hex,
-                      color: colors[index].isDark ? "white" : "black",
+                      color: isDark(color),
                       marginRight: "10px",
                       border: "1px solid black",
                     }}
@@ -172,7 +135,11 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
                   <FaTrash cursor={"pointer"} color={"#757575"} onClick={() => handleDelete(index)} />
                 </div>
                 {renderPicker[index] && (
-                  <Cover onClick={(e) => handleClosePicker(e, index)} id={"cover"} key={`cover${index}`}>
+                  <Cover
+                    onClickCapture={(e) => handleClosePicker(e, index)}
+                    id={"cover"}
+                    key={`cover${index}`}
+                  >
                     <div className="popover">
                       <ChromePicker onChangeComplete={(color) => handleChangeComplete(color, index)} />
                     </div>

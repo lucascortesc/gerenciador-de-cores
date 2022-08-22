@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaRegEdit, FaTrash } from "react-icons/fa";
 import Lottie from "react-lottie";
@@ -18,30 +18,11 @@ interface Props {
 }
 
 export const Palette: React.FC<Props> = ({ palette }) => {
-  const [isDark, setIsDark] = useState<boolean[]>();
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
   const [openModalUpdate, setOpenModalUpdate] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { deletePalette, createPalette, setCreatePalette, setColors } = usePalettes();
-
-  useEffect(() => {
-    const aux: boolean[] = [];
-
-    for (let i = 0; i < palette.colors.length; i++) {
-      const rgba: string[] = palette.colors[i].rgba.split(",");
-
-      const r = Number(rgba[0]);
-      const g = Number(rgba[1]);
-      const b = Number(rgba[2]);
-
-      const isDark: boolean = (r * 299 + g * 587 + b * 114) / 1000 > 128 ? false : true;
-
-      aux[i] = isDark;
-    }
-
-    setIsDark(aux);
-  }, []);
+  const { deletePalette, createPalette, setCreatePalette, setColors, isDark } = usePalettes();
 
   const loadingOptions = {
     loop: true,
@@ -165,10 +146,7 @@ export const Palette: React.FC<Props> = ({ palette }) => {
                   key={`${color.hex}${index}`}
                   onClick={() => handleClickCopy(color.hex)}
                 >
-                  <div
-                    className="palette__desc"
-                    style={{ color: isDark ? (isDark[index] ? "white" : "black") : "white" }}
-                  >
+                  <div className="palette__desc" style={{ color: isDark(color) }}>
                     <p>{color.name}</p>
                     <p>{color.hex}</p>
                   </div>
