@@ -28,14 +28,13 @@ export const Background = styled.div`
   }
 
   .modal__close {
-    cursor: pointer;
-
     width: 100%;
     display: flex;
     justify-content: end;
   }
 
   .modal__close p {
+    cursor: pointer;
     font-weight: bold;
   }
 `;

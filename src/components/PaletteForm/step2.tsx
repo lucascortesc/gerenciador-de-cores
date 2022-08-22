@@ -44,21 +44,20 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
 
   let pickedColor: ColorResult;
 
-  const handleClosePicker = (e: any, index: number) => {
-    if (e.target.id === "cover") {
-      if (pickedColor) {
-        const rgba = `${pickedColor.rgb.r},${pickedColor.rgb.g},${pickedColor.rgb.b},${pickedColor.rgb.a}`;
-        const newColors = [...colors];
+  const handleConfirmPicker = (index: number) => {
+    if (pickedColor) {
+      const rgba = `${pickedColor.rgb.r},${pickedColor.rgb.g},${pickedColor.rgb.b},${pickedColor.rgb.a}`;
+      const newColors = [...colors];
 
-        newColors[index] = { name: colors[index].name, hex: pickedColor.hex, rgba };
+      newColors[index] = { name: colors[index].name, hex: pickedColor.hex, rgba };
 
-        setColors(newColors);
-      }
-
-      const aux = [...renderPicker];
-      aux[index] = !aux[index];
-      setRenderPicker(aux);
+      setColors(newColors);
     }
+
+    const aux = [...renderPicker];
+    aux[index] = !aux[index];
+
+    setRenderPicker(aux);
   };
 
   const handleChangeComplete = (color: ColorResult, index: number) => {
@@ -135,13 +134,25 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
                   <FaTrash cursor={"pointer"} color={"#757575"} onClick={() => handleDelete(index)} />
                 </div>
                 {renderPicker[index] && (
-                  <Cover
-                    onClickCapture={(e) => handleClosePicker(e, index)}
-                    id={"cover"}
-                    key={`cover${index}`}
-                  >
+                  <Cover id={"cover"} key={`cover${index}`}>
                     <div className="popover">
                       <ChromePicker onChangeComplete={(color) => handleChangeComplete(color, index)} />
+                    </div>
+                    <div className="cover__buttons">
+                      <Button
+                        variant="contained"
+                        style={{ background: "red", color: "white" }}
+                        onClick={() => handleColorClick(index)}
+                      >
+                        CANCELAR
+                      </Button>
+                      <Button
+                        variant="contained"
+                        style={{ color: "white" }}
+                        onClick={() => handleConfirmPicker(index)}
+                      >
+                        OK
+                      </Button>
                     </div>
                   </Cover>
                 )}

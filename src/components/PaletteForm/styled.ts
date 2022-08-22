@@ -168,4 +168,12 @@ export const Cover = styled.div`
     position: absolute;
     z-index: 51;
   }
+
+  .cover__buttons {
+    width: 225px;
+    margin-top: 300px;
+    z-index: 51;
+    display: flex;
+    justify-content: space-around;
+  }
 `;
