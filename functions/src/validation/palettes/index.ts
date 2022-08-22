@@ -23,7 +23,8 @@ export const createPaletteSchema = yup
           })
           .noUnknown(true)
       )
-      .required(),
+      .required()
+      .min(2, "you must add at least 2 colors"),
   })
   .noUnknown(true);
 
