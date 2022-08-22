@@ -136,7 +136,10 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
                 {renderPicker[index] && (
                   <Cover id={"cover"} key={`cover${index}`}>
                     <div className="popover">
-                      <ChromePicker onChangeComplete={(color) => handleChangeComplete(color, index)} />
+                      <ChromePicker
+                        onChangeComplete={(color) => handleChangeComplete(color, index)}
+                        color={color.hex}
+                      />
                     </div>
                     <div className="cover__buttons">
                       <Button
