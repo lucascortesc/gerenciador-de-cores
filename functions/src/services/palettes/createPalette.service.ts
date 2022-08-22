@@ -3,7 +3,10 @@ import { AppError } from "../../errors/AppError";
 import { db } from "../../index";
 import { IPaletteResponse, IPalleteRequest } from "../../interfaces/exportInterfaces";
 
-export const createPaletteService = async (data: IPalleteRequest, userId: string): Promise<IPaletteResponse> => {
+export const createPaletteService = async (
+  data: IPalleteRequest,
+  userId: string
+): Promise<IPaletteResponse> => {
   const user = await db.collection("users").doc(userId).get();
 
   if (!user.exists) {
