@@ -16,13 +16,29 @@ export const Step1Container = styled.div`
   Button {
     display: block;
     margin-top: 25px;
-    margin-left: auto;
+    margin-left: auto !important;
   }
 `;
 
 export const Step2Container = styled.div`
   max-height: 500px;
   overflow: auto;
+  padding-right: 10px;
+
+  &::-webkit-scrollbar-track {
+    padding: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #fd377e;
+  }
 
   .step2__title {
     font-weight: bold;
@@ -38,7 +54,7 @@ export const Step2Container = styled.div`
   .step2__form {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 20px;
   }
 
   .step2__colorTitle {
@@ -72,6 +88,8 @@ export const Step2Container = styled.div`
     gap: 5px;
   }
 `;
+
+export const Step3Container = styled.div``;
 
 export const Cover = styled.div`
   position: fixed;

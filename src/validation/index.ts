@@ -36,7 +36,7 @@ export const Step1Schema = yup.object().shape({
 });
 
 export const Step2Schema = yup.object().shape({
-  name1: yup.string().required().max(20, "name must contain a maximum of 20 characters"),
+  name1: yup.string().optional().max(20, "name must contain a maximum of 20 characters"),
   name2: yup.string().optional().max(20, "name must contain a maximum of 20 characters"),
   name3: yup.string().optional().max(20, "name must contain a maximum of 20 characters"),
   name4: yup.string().optional().max(20, "name must contain a maximum of 20 characters"),

@@ -27,19 +27,32 @@ export const MainCointainer = styled.div`
     font-weight: bold;
   }
 
-  Button {
+  .main__lottie-container {
+    width: 100vw;
+    height: 100vh;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .main__addPalette {
     display: block;
     margin: 0 auto;
   }
 
-  Button:hover {
+  .main__addPalette:hover {
     filter: brightness(1.5);
-    transform: scale(1.1);
+    transform: scale(1.1) !important;
     transition: transform 0.2s;
   }
 
   @media screen and (min-width: 480px) {
-    Button {
+    .main__addPalette {
       margin: 0;
     }
   }

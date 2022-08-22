@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
+import { usePalettes } from "../../Providers/Palettes";
 import { Background } from "./styled";
 
 interface Props {
@@ -8,6 +9,13 @@ interface Props {
 }
 
 export const Modal: React.FC<Props> = ({ setOpenModal, children }) => {
+  const { setCreatePalette } = usePalettes();
+
+  const handleClick = () => {
+    setCreatePalette({ step: 1 });
+    setOpenModal(false);
+  };
+
   return (
     <Background>
       <motion.div
@@ -17,8 +25,9 @@ export const Modal: React.FC<Props> = ({ setOpenModal, children }) => {
         className="modal__body"
       >
         <div className="modal__close">
-          <p onClick={() => setOpenModal(false)}>x</p>
+          <p onClick={() => handleClick()}>x</p>
         </div>
+
         {children}
       </motion.div>
     </Background>

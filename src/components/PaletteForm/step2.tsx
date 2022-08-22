@@ -1,12 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { motion } from "framer-motion";
+import { ReactNode, useEffect, useState } from "react";
 import { ChromePicker, ColorResult } from "react-color";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
 import Lottie from "react-lottie";
-import { formColor, IColor, IColorBrithness, IPalette } from "../../interfaces";
+import { formColor, IColor, IPalette } from "../../interfaces";
 import animatedLoading from "../../lottie/41343-4-color-circles-loading.json";
 import { usePalettes } from "../../Providers/Palettes";
 import { Step2Schema } from "../../validation";
@@ -14,15 +15,23 @@ import { Cover, Step2Container } from "./styled";
 
 interface Props {
   setOpenModal: (value: boolean) => void;
+  title?: string;
 }
 
-export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
-  const { createPalette, setCreatePalette, postPalette } = usePalettes();
-  const [renderPicker, setRenderPicker] = useState<boolean>(false);
-  const [colors, setColors] = useState<IColorBrithness[]>([
-    { name: " ", rgba: "255,255,255,1", hex: "#fff", isDark: false },
-  ]);
+export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
+  const { createPalette, postPalette, colors, setColors, updatePalette } = usePalettes();
+  const [renderPicker, setRenderPicker] = useState<boolean[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    let aux: boolean[] = [];
+
+    for (let i = 0; i < 10; i++) {
+      aux[i] = false;
+    }
+
+    setRenderPicker(aux);
+  }, []);
 
   const {
     register,
@@ -40,7 +49,10 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
   };
 
   const handleColorClick = (index: number) => {
-    setRenderPicker(!renderPicker);
+    const aux = [...renderPicker];
+    aux[index] = !aux[index];
+
+    setRenderPicker(aux);
   };
 
   let pickedColor: ColorResult;
@@ -61,11 +73,13 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
         setColors(newColors);
       }
 
-      setRenderPicker(!renderPicker);
+      const aux = [...renderPicker];
+      aux[index] = !aux[index];
+      setRenderPicker(aux);
     }
   };
 
-  const handleChangeComplete = (color: ColorResult) => {
+  const handleChangeComplete = (color: ColorResult, index: number) => {
     pickedColor = color;
   };
 
@@ -76,7 +90,6 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
 
     const newName = [...colors];
     newName[index] = { name, rgba: colors[index].rgba, hex: colors[index].hex, isDark: colors[index].isDark };
-    console.log(newName);
     setColors(newName);
   };
 
@@ -97,24 +110,36 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
       name,
     };
 
-    const res = await postPalette(palette);
+    let res: any;
+
+    if (title === "Criando cores") {
+      res = await postPalette(palette);
+    } else {
+      if (createPalette.id) {
+        res = await updatePalette(createPalette.id, palette);
+      }
+    }
 
     if (res.error) {
       toast.error(res.error);
       setLoading(false);
     } else {
-      toast.success("Paleta criada com sucesso");
+      if (title === "Criando cores") {
+        toast.success("Paleta criada com sucesso");
+      } else {
+        toast.success("Paleta editada com sucesso");
+      }
       createPalette.step = 1;
       setOpenModal(false);
     }
   };
 
   return (
-    <>
+    <motion.div initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
       <Step2Container>
-        <p className="step2__title">Criando cores</p>
+        <p className="step2__title">{title}</p>
         <div className="step2__container-button">
-          <Button disabled={colors.length === 10} variant="contained" onClick={() => handleAddColor()}>
+          <Button disabled={colors.length === 7} variant="contained" onClick={() => handleAddColor()}>
             Adicionar Cor
           </Button>
         </div>
@@ -128,7 +153,7 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
                     sx={{ width: "100%" }}
                     id={`name${index + 1}`}
                     label="Nome"
-                    variant="filled"
+                    variant="standard"
                     {...register(`name${index + 1}`)}
                     error={!!errors[`name${index + 1}`]}
                     key={`input${index}`}
@@ -143,16 +168,17 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
                     style={{
                       background: colors[index]?.hex,
                       color: colors[index].isDark ? "white" : "black",
+                      marginRight: "10px",
                     }}
                   >
                     SELECIONAR COR
                   </Button>
                   <FaTrash cursor={"pointer"} color={"#757575"} onClick={() => handleDelete(index)} />
                 </div>
-                {renderPicker && (
+                {renderPicker[index] && (
                   <Cover onClick={(e) => handleClosePicker(e, index)} id={"cover"} key={`cover${index}`}>
                     <div className="popover">
-                      <ChromePicker onChangeComplete={(color) => handleChangeComplete(color)} />
+                      <ChromePicker onChangeComplete={(color) => handleChangeComplete(color, index)} />
                     </div>
                   </Cover>
                 )}
@@ -160,8 +186,8 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
             );
           })}
           {!loading ? (
-            <Button disabled={colors.length === 0} onClick={handleSubmit(onSubmit)} variant="contained">
-              AVANÇAR
+            <Button disabled={colors.length < 2} onClick={handleSubmit(onSubmit)} variant="contained">
+              CRIAR
             </Button>
           ) : (
             <div className="createPallete__lottie">
@@ -176,6 +202,6 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal }) => {
           )}
         </form>
       </Step2Container>
-    </>
+    </motion.div>
   );
 };

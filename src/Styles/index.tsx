@@ -15,7 +15,10 @@ export const GlobalStyle = createGlobalStyle`
 
 button {
  cursor: pointer;
+}
 
+body {
+  background-color: #fafaf5;
 }
 
 `;

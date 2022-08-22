@@ -5,6 +5,7 @@ export interface IChildren {
 }
 
 export interface IPalette {
+  id?: string;
   name: string;
   colors: IColor[];
 }
@@ -13,6 +14,7 @@ export interface IColor {
   name: string;
   rgba: string;
   hex: string;
+  isDark?: boolean;
 }
 
 export interface IColorBrithness extends IColor {
@@ -42,6 +44,7 @@ export interface IStep1 {
 }
 
 export interface ICreatePalette {
+  id?: string;
   step?: number;
   name?: string;
   colors?: IColor[];
