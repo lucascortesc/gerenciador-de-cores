@@ -1,13 +1,18 @@
+import { IPalette } from "../../interfaces";
 import { usePalettes } from "../../Providers/Palettes";
 import { Palette } from "../Palette";
 import { Container } from "./styled";
 
-export const Palettes = () => {
+interface Props {
+  filtredPalettes: IPalette[];
+}
+
+export const Palettes: React.FC<Props> = ({ filtredPalettes }) => {
   const { palettes } = usePalettes();
 
   return (
     <Container>
-      {palettes.map((palette) => {
+      {filtredPalettes.map((palette) => {
         return <Palette palette={palette} key={palette.id} />;
       })}
     </Container>
