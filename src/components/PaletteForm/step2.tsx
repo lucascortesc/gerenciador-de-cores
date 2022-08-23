@@ -33,7 +33,7 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<any>({ resolver: yupResolver(Step2Schema) });
+  } = useForm<formColor>({ resolver: yupResolver(Step2Schema) });
 
   const handleColorClick = (index: number) => {
     const aux = [...renderPicker];
@@ -105,17 +105,18 @@ export const FormStep2: React.FC<Props> = ({ setOpenModal, title }) => {
             return (
               <div className="step2__container-color" key={index}>
                 <div>
-                  <TextField
-                    sx={{ width: "100%" }}
-                    id={`name${index + 1}`}
-                    label="Nome"
-                    variant="standard"
-                    {...register(`name${index + 1}`)}
-                    error={!!errors[`name${index + 1}`]}
-                    key={`input${index}`}
-                    defaultValue={color.name && color.name}
-                    onChange={(e) => handleChangeName(e.target.value, index)}
-                  />
+                  <div>
+                    <TextField
+                      id={`name${index + 1}`}
+                      label="Nome"
+                      variant="standard"
+                      {...register(`name${index + 1}`)}
+                      error={!!errors[`name${index + 1}`]}
+                      key={`input${index}`}
+                      defaultValue={color.name && color.name}
+                      onChange={(e) => handleChangeName(e.target.value, index)}
+                    />
+                  </div>
                   <span className="erro">{errors[`name${index + 1}`]?.message as ReactNode}</span>
                 </div>
                 <div className="step2__conteinar-delete">

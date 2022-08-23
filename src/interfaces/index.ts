@@ -1,5 +1,10 @@
 import { ReactNode } from "react";
 
+export interface Response {
+  success?: string;
+  error?: string;
+}
+
 export interface IChildren {
   children: ReactNode;
 }
@@ -46,14 +51,5 @@ export interface ICreatePalette {
 }
 
 export interface formColor {
-  name_1?: string;
-  name_2?: string;
-  name_3?: string;
-  name_4?: string;
-  name_5?: string;
-  name_6?: string;
-  name_7?: string;
-  name_8?: string;
-  name_9?: string;
-  name_10?: string;
+  [key: string]: string;
 }

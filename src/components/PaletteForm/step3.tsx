@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Lottie from "react-lottie";
-import { IPalette } from "../../interfaces";
+import { IPalette, Response } from "../../interfaces";
 import animatedLoading from "../../lottie/41343-4-color-circles-loading.json";
 import { usePalettes } from "../../Providers/Palettes";
 import { Step3Container } from "./styled";
@@ -38,7 +38,9 @@ export const FormStep3: React.FC<Props> = ({ setOpenModal, title }) => {
       colors,
       name,
     };
-    let res: any;
+
+    let res: Response = {} as Response;
+
     if (title === "Criando cores") {
       res = await postPalette(palette);
     } else {
@@ -50,11 +52,7 @@ export const FormStep3: React.FC<Props> = ({ setOpenModal, title }) => {
       toast.error(res.error);
       setIsLoading(false);
     } else {
-      if (title === "Criando cores") {
-        toast.success("Paleta criada com sucesso");
-      } else {
-        toast.success("Paleta editada com sucesso");
-      }
+      toast.success(res.success!);
       setCreatePalette({ step: 1 });
       setOpenModal(false);
     }

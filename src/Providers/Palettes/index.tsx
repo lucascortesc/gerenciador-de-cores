@@ -1,18 +1,18 @@
 import { createContext, useContext, useState } from "react";
-import { IChildren, IColor, ICreatePalette, IPalette } from "../../interfaces";
+import { IChildren, IColor, ICreatePalette, IPalette, Response } from "../../interfaces";
 import { api } from "../../services/api";
 import { validateToken } from "../validateToken";
 
 interface PalettesProvider {
   palettes: IPalette[];
   createPalette: ICreatePalette;
-  setCreatePalette: (value: any) => void;
-  getPalettes: () => Promise<any>;
-  postPalette: (data: IPalette) => Promise<any>;
-  deletePalette: (id: string) => Promise<any>;
+  setCreatePalette: (value: ICreatePalette) => void;
+  getPalettes: () => Promise<Response>;
+  postPalette: (data: IPalette) => Promise<Response>;
+  deletePalette: (id: string) => Promise<Response>;
   colors: IColor[];
-  setColors: (value: any) => void;
-  updatePalette: (id: string, data: IPalette) => Promise<any>;
+  setColors: (value: IColor[]) => void;
+  updatePalette: (id: string, data: IPalette) => Promise<Response>;
   isDark: (color: IColor) => string;
 }
 const PalettesContext = createContext<PalettesProvider>({} as PalettesProvider);
@@ -30,10 +30,10 @@ export const PalettesProvider = ({ children }: IChildren) => {
 
     if (!(await validateToken(token, user))) {
       localStorage.clear();
-      return "missing or expired token";
+      return { error: "missing or expired token" };
     }
 
-    let response;
+    let response: Response = {} as Response;
 
     await api
       .get("/palettes", {
@@ -43,9 +43,11 @@ export const PalettesProvider = ({ children }: IChildren) => {
       })
       .then((res) => {
         setPalettes(res.data);
-        response = true;
+        response = { success: "Sucesso em recuperar paletas" };
       })
-      .catch((err) => (response = err.response.data));
+      .catch((err) => {
+        response = err.response?.data;
+      });
 
     return response;
   };
@@ -56,10 +58,10 @@ export const PalettesProvider = ({ children }: IChildren) => {
 
     if (!(await validateToken(token, user))) {
       localStorage.clear();
-      return "missing or expired token";
+      return { error: "missing or expired token" };
     }
 
-    let response;
+    let response: Response = {} as Response;
 
     await api
       .post("/palettes", data, {
@@ -69,9 +71,11 @@ export const PalettesProvider = ({ children }: IChildren) => {
       })
       .then((res) => {
         setPalettes([...palettes, res.data]);
-        response = true;
+        response = { success: "Paleta criada com sucesso" };
       })
-      .catch((err) => (response = err.response.data));
+      .catch((err) => {
+        response = err.response?.data;
+      });
 
     return response;
   };
@@ -82,10 +86,10 @@ export const PalettesProvider = ({ children }: IChildren) => {
 
     if (!(await validateToken(token, user))) {
       localStorage.clear();
-      return "missing or expired token";
+      return { error: "missing or expired token" };
     }
 
-    let response;
+    let response: Response = {} as Response;
 
     await api
       .delete(`/palettes/${id}`, {
@@ -95,9 +99,11 @@ export const PalettesProvider = ({ children }: IChildren) => {
       })
       .then((res) => {
         setPalettes(palettes.filter((palette) => palette.id !== id));
-        response = true;
+        response = { success: "Paleta deletada com sucesso" };
       })
-      .catch((err) => (response = err.response.data));
+      .catch((err) => {
+        response = err.response?.data;
+      });
 
     return response;
   };
@@ -108,10 +114,10 @@ export const PalettesProvider = ({ children }: IChildren) => {
 
     if (!(await validateToken(token, user))) {
       localStorage.clear();
-      return "missing or expired token";
+      return { error: "missing or expired token" };
     }
 
-    let response;
+    let response: Response = {} as Response;
 
     await api
       .patch(`/palettes/${id}`, data, {
@@ -124,9 +130,11 @@ export const PalettesProvider = ({ children }: IChildren) => {
         const index = aux.findIndex((palette) => palette.id === id);
         aux[index] = res.data;
         setPalettes(aux);
-        response = true;
+        response = { success: "Paleta editada com sucesso" };
       })
-      .catch((err) => (response = err.response.data));
+      .catch((err) => {
+        response = err.response?.data;
+      });
 
     return response;
   };

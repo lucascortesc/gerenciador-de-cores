@@ -47,7 +47,7 @@ export const Palette: React.FC<Props> = ({ palette }) => {
         toast.error(res.error);
         setIsLoading(false);
       } else {
-        toast.success("Paleta excluida com sucesso");
+        toast.success(res.success!);
         setOpenModalDelete(false);
       }
     }

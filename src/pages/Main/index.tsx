@@ -64,7 +64,7 @@ export const Main = () => {
   };
 
   const initialColor = () => {
-    setColors([{ name: " ", rgba: "255,255,255,1", hex: "#fff", isDark: false }]);
+    setColors([{ name: " ", rgba: "255,255,255,1", hex: "#fff" }]);
     setOpenModal(true);
   };
 
@@ -114,7 +114,7 @@ export const Main = () => {
       toast.error(res.error);
       setIsLoadingButtons(false);
     } else {
-      toast.success("Paleta criada com sucesso");
+      toast.success(res.success!);
     }
     setIsLoadingButtons(false);
   };

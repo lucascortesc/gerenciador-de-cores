@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { IChildren, IUser, IUserLogin, IUserRegister } from "../../interfaces";
+import { IChildren, IUser, IUserLogin, IUserRegister, Response } from "../../interfaces";
 import { api } from "../../services/api";
 
 interface UserProvider {
   user: IUser;
-  signIn: (data: IUserLogin) => Promise<any>;
-  registerUser: (data: IUserRegister) => Promise<any>;
+  signIn: (data: IUserLogin) => Promise<Response>;
+  registerUser: (data: IUserRegister) => Promise<Response>;
 }
 
 const UserContext = createContext<UserProvider>({} as UserProvider);
@@ -23,7 +23,7 @@ export const UserProvider = ({ children }: IChildren) => {
   }, []);
 
   const signIn = async (data: IUserLogin) => {
-    let response = "";
+    let response: Response = {} as Response;
     await api
       .post("/login", data)
       .then((res) => {
@@ -36,7 +36,7 @@ export const UserProvider = ({ children }: IChildren) => {
         localStorage.setItem("token", res.data.token);
 
         setUser(user);
-        response = "Login feito com sucesso";
+        response = { success: "Login feito com sucesso" };
       })
       .catch((err) => (response = err.response.data));
 
@@ -44,12 +44,12 @@ export const UserProvider = ({ children }: IChildren) => {
   };
 
   const registerUser = async (data: IUserRegister) => {
-    let response = "";
+    let response: Response = {} as Response;
 
     await api
       .post("/register", data)
       .then((res) => {
-        response = "Usuário cadastrado com sucesso";
+        response = { success: "Usuário cadastrado com sucesso" };
       })
       .catch((err) => (response = err.response.data));
 

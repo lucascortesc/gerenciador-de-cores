@@ -61,7 +61,7 @@ export const Register = () => {
       toast.error(res.error);
       setLoading(false);
     } else {
-      toast.success("Usuário registrado com sucesso");
+      toast.success(res.success!);
       setTimeout(() => {
         history.push("/login");
       }, 1500);

@@ -53,7 +53,7 @@ export const Login = () => {
       toast.error(res.error);
       setLoading(false);
     } else {
-      toast.success("Login feito com sucesso");
+      toast.success(res.success!);
       setTimeout(() => {
         history.push("/main");
       }, 1500);
