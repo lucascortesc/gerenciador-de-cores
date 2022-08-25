@@ -1,4 +1,4 @@
-# teppa-testDevFullStack
+# Gerenciador de cores
 
 ## Projeto
 
